@@ -8,6 +8,12 @@ from django.contrib.auth.tokens import default_token_generator
 from django.shortcuts import render
 from django.utils.encoding import force_bytes
 from django.utils.http import urlsafe_base64_encode
+from django.contrib.auth import get_user_model
+from django.contrib.auth.forms import PasswordResetForm
+from django.contrib.auth.tokens import default_token_generator
+from django.shortcuts import render
+from django.utils.encoding import force_bytes
+from django.utils.http import urlsafe_base64_encode
 
 # Create your views here.
 class SignUpView(CreateView):
@@ -20,8 +26,17 @@ User = get_user_model()
 
 
 def password_reset_preview(request):
+    form = PasswordResetForm(request.POST or None)
+
     if request.method == "POST":
-        email = request.POST.get("email", "")
+        if not form.is_valid():
+            return render(
+                request,
+                "registration/password_reset_form.html",
+                {"form": form},
+            )
+
+        email = form.cleaned_data["email"]
         users = User._default_manager.filter(
             email__iexact=email,
             is_active=True,
@@ -41,14 +56,18 @@ def password_reset_preview(request):
 
                 return render(
                     request,
-                    "registration/tamplate_email.html",
+                    "registration/template_email.html",
                     context,
                 )
 
-        # Avoid revealing whether an account exists.
+        # Do not reveal whether an account exists.
         return render(
             request,
             "registration/password_reset_done.html",
         )
 
-    return render(request, "registration/password_reset_form.html")
+    return render(
+        request,
+        "registration/password_reset_form.html",
+        {"form": form},
+    )
