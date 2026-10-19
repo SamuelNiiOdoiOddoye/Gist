@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+
+{% block title %}Password Reset Email Template{% endblock title %} 
+
+<body>
+    <h1>Password Reset Email Content Header</h1>
+
+    <p>Dear {{ user.get_full_name }},</p>
+    <p>We received a request to reset your password for your account. If you did not make this request, please ignore this email.</p>
+    <p>Please follow the link below to reset your password:</p>
+    <p>
+        <a href="{{ protocol }}://{{ domain }}{% url 'password_reset_confirm' uidb64=uid token=token %}">Reset Password</a>
+    </p>
+</body>
