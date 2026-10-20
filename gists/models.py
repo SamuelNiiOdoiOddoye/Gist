@@ -17,4 +17,4 @@ class Gist(models.Model):
         return self.title
 
     def get_absolute_url(self):
-        return reverse('gist-detail', kwargs={'pk': self.pk})
+        return reverse('gist_detail', kwargs={'pk': self.pk})
