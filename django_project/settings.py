@@ -37,10 +37,14 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'accounts.apps.AccountsConfig',
-    'pages.apps.PagesConfig',
+    # 3rd party apps
     'crispy_forms',
     'crispy_bootstrap5',
+    # local apps
+    'accounts.apps.AccountsConfig',
+    'pages.apps.PagesConfig',
+    'articles.apps.ArticlesConfig',
+
 ]
 
 MIDDLEWARE = [
@@ -106,9 +110,9 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/6.1/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = 'en-gb'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Africa/Accra'
 
 USE_I18N = True
 
