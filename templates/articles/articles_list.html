@@ -9,6 +9,7 @@
 
 <!-- Article -->
     <div class="card">
+
         <!-- Article Header -->
         <div class="card-header">
             <span class="font-weight-bold">{{ article.title }} </span> &middot
@@ -44,13 +45,33 @@
             </small>
         </div>
         
-
         <!-- Article Footer -->
         <div class="card-footer text-center text-muted">
-            <a href="{% url 'article_detail' article.id %}">View</a> | <a href="{% url 'article_update' article.id %}">Edit</a> | <a href="{% url 'article_delete' article.id %}">Delete</a>
+
+            <!-- View Article -->
+            <a href="{% url 'article_detail' article.id %}" title="View article" aria-label="View article">
+                <i class="fas fa-eye"></i>
+            </a>
+
+            &nbsp;|&nbsp;
+
+            <!-- Edit Article -->
+            <a href="{% url 'article_update' article.id %}" title="Edit article" aria-label="Edit article">
+                <i class="fas fa-edit text-primary"></i>
+            </a>
+
+            &nbsp;|&nbsp;
+
+            <!-- Delete Article -->
+            <a href="{% url 'article_delete' article.id %}" title="Delete article" aria-label="Delete article">
+                <i class="fas fa-trash-alt text-danger"></i>
+            </a>
+
+
         </div>
-        
+
     </div>
+    
 {% endfor %}
 
 {% endblock content %}
