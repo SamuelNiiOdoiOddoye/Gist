@@ -1,69 +1,69 @@
 {% extends 'base.html' %}
 
-{% block title %} Articles {% endblock title %}
+{% block title %} Create Your Gist {% endblock title %}
 
 {% block content %}
 
-<!-- Article List -->
-{% for article in articles %}
+<!-- Gist List -->
+{% for gist in gists %}
 
-<!-- Article -->
+<!-- Gist -->
     <div class="card">
 
-        <!-- Article Header -->
+        <!-- Gist Header -->
         <div class="card-header">
-            <span class="font-weight-bold">{{ article.title }} </span> &middot
-            <span class="text-muted"> by {{ article.author }} | {{ article.date_posted|date:"M d, Y H:i" }}</span>
+            <span class="font-weight-bold">{{ gist.title }} </span> &middot
+            <span class="text-muted"> by {{ gist.author }} | {{ gist.date_posted|date:"M d, Y H:i" }}</span>
         </div>
 
-        <!-- Article Body -->
+        <!-- Gist Body -->
         <div class="card-body">
-            {{article.body|linebreaks}}
+            {{gist.body|linebreaks}}
         </div>
 
-        <!-- Article Reposts | Likes | Dislikes -->
+        <!-- Gist Reposts | Likes | Dislikes -->
         <div class="card-body">
             <small class="text-muted">
 
                 <!-- Reposts -->
                     <span class="mr-3" title="Reposts">
                         <i class="fas fa-retweet text-primary"></i>
-                        {{ article.reposts.count }}
+                        {{ gist.reposts.count }}
                     </span>
 
                 <!-- Likes -->
                     <span class="mr-3" title="Likes">
                         <i class="fas fa-thumbs-up text-success"></i>
-                        {{ article.likes.count }}
+                        {{ gist.likes.count }}
                     </span>
 
                 <!-- Dislikes -->
                     <span title="Dislikes">
                         <i class="fas fa-thumbs-down text-danger"></i>
-                        {{ article.dislikes.count }}
+                        {{ gist.dislikes.count }}
                     </span>
             </small>
         </div>
         
-        <!-- Article Footer -->
+        <!-- Gist Footer -->
         <div class="card-footer text-center text-muted">
 
-            <!-- View Article -->
-            <a href="{% url 'article_detail' article.id %}" title="View article" aria-label="View article">
+            <!-- View Gist -->
+            <a href="{% url 'gist_detail' gist.id %}" title="View gist" aria-label="View gist">
                 <i class="fas fa-eye"></i>
             </a>
 
             &nbsp;|&nbsp;
 
-            <!-- Edit Article -->
-            <a href="{% url 'article_update' article.id %}" title="Edit article" aria-label="Edit article">
+            <!-- Edit Gist -->
+            <a href="{% url 'gist_update' gist.id %}" title="Edit gist" aria-label="Edit gist">
                 <i class="fas fa-edit text-primary"></i>
             </a>
 
             &nbsp;|&nbsp;
 
-            <!-- Delete Article -->
-            <a href="{% url 'article_delete' article.id %}" title="Delete article" aria-label="Delete article">
+            <!-- Delete Gist -->
+            <a href="{% url 'gist_delete' gist.id %}" title="Delete gist" aria-label="Delete gist">
                 <i class="fas fa-trash-alt text-danger"></i>
             </a>
 

@@ -43,7 +43,7 @@ INSTALLED_APPS = [
     # local apps
     'accounts.apps.AccountsConfig',
     'pages.apps.PagesConfig',
-    'articles.apps.ArticlesConfig',
+    'gists.apps.GistsConfig',
 
 ]
 

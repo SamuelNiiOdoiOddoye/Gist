@@ -1,0 +1,77 @@
+{% extends 'base.html' %}
+
+{% block title %} Gists {% endblock title %}
+
+{% block content %}
+
+<!-- Gist List -->
+{% for gist in gists %}
+
+<!-- Gist -->
+    <div class="card">
+
+        <!-- Gist Header -->
+        <div class="card-header">
+            <span class="font-weight-bold">{{ gist.title }} </span> &middot
+            <span class="text-muted"> by {{ gist.author }} | {{ gist.date_posted|date:"M d, Y H:i" }}</span>
+        </div>
+
+        <!-- Gist Body -->
+        <div class="card-body">
+            {{gist.body|linebreaks}}
+        </div>
+
+        <!-- Gist  Reposts | Likes | Dislikes -->
+        <div class="card-body">
+            <small class="text-muted">
+
+                <!-- Reposts -->
+                    <span class="mr-3" title="Reposts">
+                        <i class="fas fa-retweet text-primary"></i>
+                        {{ gist.reposts.count }}
+                    </span>
+
+                <!-- Likes -->
+                    <span class="mr-3" title="Likes">
+                        <i class="fas fa-thumbs-up text-success"></i>
+                        {{ gist.likes.count }}
+                    </span>
+
+                <!-- Dislikes -->
+                    <span title="Dislikes">
+                        <i class="fas fa-thumbs-down text-danger"></i>
+                        {{ gist.dislikes.count }}
+                    </span>
+            </small>
+        </div>
+        
+        <!-- Gist Footer -->
+        <div class="card-footer text-center text-muted">
+
+            <!-- View Gist -->
+            <a href="{% url 'gist_detail' gist.id %}" title="View gist" aria-label="View gist">
+                <i class="fas fa-eye"></i>
+            </a>
+
+            &nbsp;|&nbsp;
+
+            <!-- Edit Gist -->
+            <a href="{% url 'gist_update' gist.id %}" title="Edit gist" aria-label="Edit gist">
+                <i class="fas fa-edit text-primary"></i>
+            </a>
+
+            &nbsp;|&nbsp;
+
+            <!-- Delete Gist -->
+            <a href="{% url 'gist_delete' gist.id %}" title="Delete gist" aria-label="Delete gist">
+                <i class="fas fa-trash-alt text-danger"></i>
+            </a>
+
+
+        </div>
+
+    </div>
+
+{% endfor %}
+
+{% endblock content %}
