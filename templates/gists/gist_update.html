@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+
+{% block title %} Update Your Gist {% endblock title %}
+
+{% block content %}
+
+<!-- Update Gist Form -->
+<form method="post">
+    {% csrf_token %}
+    <div class="form-group">
+        <label for="title">Gist Title</label>
+        <input type="text" class="form-control" id="title" name="title" value="{{ gist.title }}" required>
+    </div>
+    <div class="form-group">
+        <label for="body">Gist Body</label>
+        <textarea class="form-control" id="body" name="body" rows="5" required>{{ gist.body }}</textarea>
+    </div>
+    <button type="submit" class="btn btn-primary">Update Gist</button>
+</form>
+
+{% endblock content %}
+
+
+{% endblock content %}

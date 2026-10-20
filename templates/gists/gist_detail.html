@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+
+{% block title %} Your gist in full {% endblock title %}
+
+{% block content %}
+
+<!-- Full Gist Details -->
+<div class="card">
+    <div class="card-body">
+        <h5 class="card-title">{{ gist.title }}</h5>
+        <p class="card-text">{{ gist.body }}</p>
+    </div>
+</div>
+
+
+{% endblock content %}
