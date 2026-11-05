@@ -45,3 +45,9 @@ htmlcov/
 build/
 dist/
 *.egg-info/
+
+# Local database backups
+db_backup_*.sqlite3
+
+# SQLite database
+db.sqlite3
