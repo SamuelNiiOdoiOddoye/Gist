@@ -1,77 +1,211 @@
 {% extends 'base.html' %}
 
-{% block title %} Gists {% endblock title %}
+{% block title %}Gists{% endblock title %}
 
 {% block content %}
 
-<!-- Gist List -->
-{% for gist in gists %}
+<div class="container">
 
-<!-- Gist -->
-    <div class="card">
+    <!-- Gists Section -->
+    <div class="row">
+        <div class="col-12">
 
-        <!-- Gist Header -->
-        <div class="card-header">
-            <span class="font-weight-bold">{{ gist.title }} </span> &middot
-            <span class="text-muted"> by {{ gist.author }} | {{ gist.date_posted|date:"M d, Y H:i" }}</span>
+            {% for gist in gists %}
+
+                <!-- Gist Card -->
+                <article class="card mb-4" aria-labelledby="gist-title-{{ gist.pk }}">
+
+                    <!-- Gist Header -->
+                    <header class="card-header">
+
+                        <div class="d-flex flex-wrap justify-content-between align-items-center">
+
+                            <div>
+                                <h5 class="font-weight-bold mb-1" id="gist-title-{{ gist.pk }}">
+                                    {{ gist.title }}
+                                </h5>
+
+                                <small class="text-muted">
+                                    By
+                                    <strong>{{ gist.author }}</strong>
+                                    <span aria-hidden="true">&middot;</span>
+                                    <time datetime="{{ gist.date_posted|date:'c' }}">
+                                        {{ gist.date_posted|date:"M d, Y H:i" }}
+                                    </time>
+                                </small>
+                            </div>
+
+                            {% if user.is_authenticated and gist.author_id == user.pk %}
+                                <span class="badge badge-primary mt-2 mt-md-0">
+                                    Your Gist
+                                </span>
+                            {% endif %}
+
+                        </div>
+
+                    </header>
+
+                    <!-- Gist Body -->
+                    <div class="card-body">
+
+                        <div class="gist-content">
+                            {{ gist.body|linebreaks }}
+                        </div>
+
+                    </div>
+
+                    <!-- Engagement Statistics -->
+                    <div class="card-body pt-0 pb-3">
+
+                        <div class="d-flex flex-wrap align-items-center text-muted">
+
+                            <span class="mr-4 mb-2" title="Reposts">
+                                <i class="fas fa-retweet text-primary"
+                                   aria-hidden="true"></i>
+                                <span class="ml-1">{{ gist.reposts.count }}</span>
+                                <span class="sr-only">reposts</span>
+                            </span>
+
+                            <span class="mr-4 mb-2" title="Likes">
+                                <i class="fas fa-thumbs-up text-success"aria-hidden="true"></i>
+                                <span class="ml-1">{{ gist.likes.count }}</span>
+                                <span class="sr-only">likes</span>
+                            </span>
+
+                            <span class="mb-2" title="Dislikes">
+                                <i class="fas fa-thumbs-down text-danger"
+                                   aria-hidden="true"></i>
+                                <span class="ml-1">{{ gist.dislikes.count }}</span>
+                                <span class="sr-only">dislikes</span>
+                            </span>
+
+                        </div>
+
+                    </div>
+
+                    <!-- Gist Comments -->
+                    <div class="card-body border-top">
+
+                        <h6 class="font-weight-bold mb-3">
+                            <i class="fas fa-comments mr-1" aria-hidden="true"></i>
+                            Comments
+                        </h6>
+
+                        {% for comment in gist.comments.all %}
+
+                            <div class="mb-3">
+
+                                <div class="d-flex align-items-center mb-1">
+                                    <strong>
+                                        {{ comment.comment_author.username }}
+                                    </strong>
+
+                                    <span class="text-muted ml-2 small">
+                                        &middot;
+                                        {{ comment.comment_date_posted|date:"M d, Y H:i" }}
+                                    </span>
+                                </div>
+
+                                <div class="text-break">
+                                    {{ comment.comment_body|linebreaks }}
+                                </div>
+
+                            </div>
+
+                            {% if not forloop.last %}
+                                <hr>
+                            {% endif %}
+
+                        {% empty %}
+
+                            <p class="text-muted mb-0">
+                                No comments yet.
+                            </p>
+
+                        {% endfor %}
+
+                    </div>
+
+                    <!-- Gist Footer / Actions -->
+                    <footer class="card-footer text-center text-muted">
+
+                        <!-- View Gist -->
+                        <a href="{% url 'gist_detail' gist.pk %}"
+                           title="View gist"
+                           aria-label="View {{ gist.title }}">
+                            <i class="fas fa-eye" aria-hidden="true"></i>
+                            <span class="sr-only">View</span>
+                        </a>
+
+                        {% if user.is_authenticated and gist.author_id == user.pk %}
+
+                            &nbsp;|&nbsp;
+
+                            <!-- Edit Gist -->
+                            <a href="{% url 'gist_update' gist.pk %}"
+                               title="Edit gist"
+                               aria-label="Edit {{ gist.title }}">
+                                <i class="fas fa-edit text-primary"
+                                   aria-hidden="true"></i>
+                                <span class="sr-only">Edit</span>
+                            </a>
+
+                            &nbsp;|&nbsp;
+
+                            <!-- Delete Gist -->
+                            <a href="{% url 'gist_delete' gist.pk %}"
+                               title="Delete gist"
+                               aria-label="Delete {{ gist.title }}">
+                                <i class="fas fa-trash-alt text-danger"
+                                   aria-hidden="true"></i>
+                                <span class="sr-only">Delete</span>
+                            </a>
+
+                        {% endif %}
+
+                    </footer>
+
+                </article>
+                <!-- End Gist Card -->
+
+            {% empty %}
+
+                <!-- Empty State -->
+                <div class="card text-center">
+
+                    <div class="card-body py-5">
+
+                        <i class="fas fa-lightbulb fa-3x text-muted mb-3"
+                           aria-hidden="true"></i>
+
+                        <h5 class="font-weight-bold">
+                            No Gists Yet
+                        </h5>
+
+                        <p class="text-muted mb-3">
+                            There are no Gists to display right now.
+                            Be the first to share something interesting.
+                        </p>
+
+                        {% if user.is_authenticated %}
+                            <a href="{% url 'gist_create' %}"
+                               class="btn btn-primary">
+                                <i class="fas fa-plus mr-1"
+                                   aria-hidden="true"></i>
+                                Create a Gist
+                            </a>
+                        {% endif %}
+
+                    </div>
+
+                </div>
+
+            {% endfor %}
+
         </div>
-
-        <!-- Gist Body -->
-        <div class="card-body">
-            {{gist.body|linebreaks}}
-        </div>
-
-        <!-- Gist  Reposts | Likes | Dislikes -->
-        <div class="card-body">
-            <small class="text-muted">
-
-                <!-- Reposts -->
-                    <span class="mr-3" title="Reposts">
-                        <i class="fas fa-retweet text-primary"></i>
-                        {{ gist.reposts.count }}
-                    </span>
-
-                <!-- Likes -->
-                    <span class="mr-3" title="Likes">
-                        <i class="fas fa-thumbs-up text-success"></i>
-                        {{ gist.likes.count }}
-                    </span>
-
-                <!-- Dislikes -->
-                    <span title="Dislikes">
-                        <i class="fas fa-thumbs-down text-danger"></i>
-                        {{ gist.dislikes.count }}
-                    </span>
-            </small>
-        </div>
-        
-        <!-- Gist Footer -->
-        <div class="card-footer text-center text-muted">
-
-            <!-- View Gist -->
-            <a href="{% url 'gist_detail' gist.id %}" title="View gist" aria-label="View gist">
-                <i class="fas fa-eye"></i>
-            </a>
-
-            &nbsp;|&nbsp;
-
-            <!-- Edit Gist -->
-            <a href="{% url 'gist_update' gist.id %}" title="Edit gist" aria-label="Edit gist">
-                <i class="fas fa-edit text-primary"></i>
-            </a>
-
-            &nbsp;|&nbsp;
-
-            <!-- Delete Gist -->
-            <a href="{% url 'gist_delete' gist.id %}" title="Delete gist" aria-label="Delete gist">
-                <i class="fas fa-trash-alt text-danger"></i>
-            </a>
-
-
-        </div>
-
     </div>
 
-{% endfor %}
+</div>
 
 {% endblock content %}
+```
